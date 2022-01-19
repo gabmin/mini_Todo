@@ -8,7 +8,7 @@ import { Data } from "../shared/types";
 // 이때 React를 import시켜주지 않으면 오류가 발생한다.
 
 const Main = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<Data[]>([]);
   const [title, setTitles] = useState("");
   useEffect(() => {
     axios
@@ -19,8 +19,9 @@ const Main = () => {
       .catch((err) => {
         console.log(err);
       });
-    return () => {};
   }, []);
+
+  console.log(data);
   return (
     <Container>
       <InputBox>
@@ -34,7 +35,9 @@ const Main = () => {
             }}
           />
         </form>
-        <TodoList data={data} />
+        {data.map((v, i) => (
+          <TodoList key={i} data={v} />
+        ))}
       </InputBox>
     </Container>
   );

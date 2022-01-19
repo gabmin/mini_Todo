@@ -12,18 +12,18 @@ server.listen(port, () => {
 });
 
 // cors 설정
-const whitelist = ["http://localhost:8080"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not Allowed Origin!"));
-    }
-  },
-};
+// const whitelist = ["http://localhost:8080"];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not Allowed Origin!"));
+//     }
+//   },
+// };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 //mysql 연결
 const connection = mysql.createConnection({
@@ -41,6 +41,7 @@ connection.connect((err) => {
   }
 });
 
+// 할 일 리스트 불러오기
 app.get("/", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   connection.query("SELECT * FROM todolist", function (error, results, fields) {
@@ -52,4 +53,24 @@ app.get("/", (req, res) => {
       console.log(error);
     }
   });
+});
+
+// 할 일 추가하기
+app.post("/add", (req, res) => {
+  var title = req.body.title;
+  var description = req.body.description;
+  var date = req.body.date;
+
+  var sql = "INSERT INTO topic (title, description, date) VALUES (?, ?, ?)";
+  connection.query(
+    sql,
+    [title, description, date],
+    function (err, result, field) {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server  Error");
+      }
+      res.redirect("/todolist/" + result.insertId);
+    }
+  );
 });

@@ -1,7 +1,7 @@
 export interface Data {
   id: number;
   title: string;
-  description?: string;
+  description: string;
   date: string;
 }
 
