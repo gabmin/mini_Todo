@@ -1,16 +1,9 @@
-import React, { useEffect } from "react";
-import { apis } from "../shared/api";
-import { getData } from "../shared/api";
+import { Data } from "../shared/types";
 
-const TodoList = () => {
-  useEffect(() => {
-    apis.getList().then((res) => {
-      console.log(res);
-    });
-  });
+const TodoList: React.FunctionComponent<Data> = (props) => {
   return (
     <div>
-      <div></div>
+      <div>{props}</div>
     </div>
   );
 };

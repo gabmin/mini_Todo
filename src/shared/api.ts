@@ -8,6 +8,10 @@ export interface getData {
 
 const api = axios.create({
   baseURL: "https://localhost:8080",
+  headers: {
+    "content-type": "application/json;charset=UTF-8",
+    accept: "application/json",
+  },
   withCredentials: true,
 });
 
