@@ -3,21 +3,26 @@ import styled from "styled-components";
 const Main = () => {
   return (
     <Container>
-      <div>
-        <h1>안녕하세요</h1>
+      <InputBox>
+        <h1>나만의 할 일 !!</h1>
         <Input></Input>
-      </div>
+      </InputBox>
     </Container>
   );
 };
 
 const Container = styled.div`
-  width: 1000px;
+  width: 100%;
+`;
+
+const InputBox = styled.div`
+  width: 70%;
   margin: auto;
+  text-align: center;
 `;
 
 const Input = styled.input`
-  width: 300px;
+  width: 50%;
   height: 50px;
   font-size: 25px;
 `;
