@@ -4,6 +4,8 @@ const mysql = require("mysql");
 const cors = require("cors");
 const app = express();
 
+require("dotenv").config();
+
 //서버 생성
 const server = http.createServer(app);
 const port = 8080;
@@ -11,26 +13,15 @@ server.listen(port, () => {
   console.log(`Start Server : localhost:${port}`);
 });
 
-// cors 설정
-const whitelist = ["http://localhost:8080"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not Allowed Origin!"));
-    }
-  },
-};
+//CROS 설정
+app.use(cors());
 
-app.use(cors(corsOptions));
-
-//mysql 연결
+//mysql 연결 (환경변수 적용)
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Rkqehf7187@",
-  database: "minitodo",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 connection.connect((err) => {
@@ -41,6 +32,7 @@ connection.connect((err) => {
   }
 });
 
+// 할 일 리스트 불러오기
 app.get("/", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   connection.query("SELECT * FROM todolist", function (error, results, fields) {
@@ -52,4 +44,24 @@ app.get("/", (req, res) => {
       console.log(error);
     }
   });
+});
+
+// 할 일 추가하기
+app.post("/add", (req, res) => {
+  var title = req.body.title;
+  var description = req.body.description;
+  var date = req.body.date;
+
+  var sql = "INSERT INTO topic (title, description, date) VALUES (?, ?, ?)";
+  connection.query(
+    sql,
+    [title, description, date],
+    function (err, result, field) {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Internal Server  Error");
+      }
+      res.redirect("/todolist/" + result.insertId);
+    }
+  );
 });
