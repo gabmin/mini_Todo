@@ -4,6 +4,8 @@ const mysql = require("mysql");
 const cors = require("cors");
 const app = express();
 
+require("dotenv").config();
+
 //서버 생성
 const server = http.createServer(app);
 const port = 8080;
@@ -11,26 +13,15 @@ server.listen(port, () => {
   console.log(`Start Server : localhost:${port}`);
 });
 
-// cors 설정
-// const whitelist = ["http://localhost:8080"];
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not Allowed Origin!"));
-//     }
-//   },
-// };
-
+//CROS 설정
 app.use(cors());
 
-//mysql 연결
+//mysql 연결 (환경변수 적용)
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Rkqehf7187@",
-  database: "minitodo",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 connection.connect((err) => {
