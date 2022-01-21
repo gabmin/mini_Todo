@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import TodoList from "../components/todoList";
 import axios from "axios";
@@ -11,8 +11,6 @@ const Main = () => {
   const [data, setData] = useState<Data[]>([]);
   const [title, setTitles] = useState("");
   const [desc, setDesc] = useState("");
-  const titleEl = useRef(null);
-  const descEl = useRef(null);
 
   useEffect(() => {
     axios
@@ -23,7 +21,7 @@ const Main = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [data]);
+  }, []);
 
   const onChangeTitle = useCallback((e) => {
     e.preventDefault();
@@ -32,7 +30,9 @@ const Main = () => {
 
   const onChangeDesc = useCallback((e) => {
     e.preventDefault();
-    setDesc(e.currentTarget.value);
+    let contents: string = e.currentTarget.value;
+    contents = contents.replaceAll("<br>", "\r\n");
+    setDesc(contents);
   }, []);
 
   const card = { title: title, description: desc };
@@ -47,6 +47,8 @@ const Main = () => {
         console.log("애러발생", err.response.data);
       });
     console.log(card);
+    setTitles("");
+    setDesc("");
   };
 
   return (
@@ -54,14 +56,9 @@ const Main = () => {
       <InputGrid>
         <h1>나만의 할 일 !!</h1>
         <h2>제목</h2>
-        <InputTitle
-          ref={titleEl}
-          type="text"
-          value={title}
-          onChange={onChangeTitle}
-        />
+        <InputTitle type="text" value={title} onChange={onChangeTitle} />
         <h2>내용</h2>
-        <InputDesc ref={descEl} value={desc} onChange={onChangeDesc} />
+        <InputDesc value={desc} onChange={onChangeDesc} />
         <SaveButton onClick={addList}>저장하기</SaveButton>
       </InputGrid>
       <ListGrid>
@@ -95,6 +92,7 @@ const InputTitle = styled.input`
   height: 25px;
   font-size: 15px;
   margin: 10px auto;
+  padding: 7px;
 `;
 
 const InputDesc = styled.textarea`
@@ -102,6 +100,7 @@ const InputDesc = styled.textarea`
   height: 200px;
   font-size: 14px;
   margin: 10px auto;
+  padding: 10px;
 `;
 
 const SaveButton = styled.button`
@@ -109,9 +108,9 @@ const SaveButton = styled.button`
   height: 30px;
   margin: auto;
   background-color: #bf94e4;
+  color: #fff;
   border: none;
   border-radius: 10px;
-  color: #fff;
   font-weight: bold;
 `;
 
