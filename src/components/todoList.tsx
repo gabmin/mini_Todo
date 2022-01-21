@@ -1,8 +1,25 @@
 import { Data } from "../shared/types";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useCallback } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const TodoList: FunctionComponent<{ data: Data }> = ({ data }) => {
+  // 삭제하기
+  const deleteList = useCallback(() => {
+    const id = data.id;
+    const deleteConfirm = window.confirm("삭제 할래요??");
+    if (deleteConfirm) {
+      axios
+        .delete(`http://localhost:8080/card/${id}`)
+        .then(() => {
+          console.log("삭제 성공");
+        })
+        .catch((err) => {
+          console.log("에러발생", err);
+        });
+    }
+  }, []);
+
   return (
     <Card>
       <TitleWrapper>{data.title}</TitleWrapper>
@@ -10,7 +27,7 @@ const TodoList: FunctionComponent<{ data: Data }> = ({ data }) => {
       <FooterGrid>
         <div>
           <Button>완료하기</Button>
-          <Button>삭제하기</Button>
+          <Button onClick={deleteList}>삭제하기</Button>
         </div>
         <DateWrapper>{data.date.slice(0, 10)}</DateWrapper>
       </FooterGrid>

@@ -35,9 +35,9 @@ const Main = () => {
     setDesc(contents);
   }, []);
 
-  const card = { title: title, description: desc };
-
+  // 추가하기
   const addList = () => {
+    const card = { title: title, description: desc };
     axios
       .post("http://localhost:8080/card", card)
       .then(() => {

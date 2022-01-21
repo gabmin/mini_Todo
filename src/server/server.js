@@ -64,6 +64,17 @@ app.post("/card", (req, res) => {
       res.status(500).send("Internal Server Error");
     }
     res.send(result);
-    // res.send(title + "," + description + "," + date);
+  });
+});
+
+// 할 일 삭제하기
+app.delete("/card/:id", (req, res) => {
+  const sql = "DElETE FROM todolist WHERE id = ?";
+  DB.query(sql, [req.params.id], function (err, result, field) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Internal Server Error");
+    }
+    res.send(result);
   });
 });
