@@ -56,9 +56,18 @@ const Main = () => {
       <InputGrid>
         <h1>나만의 할 일 !!</h1>
         <h2>제목</h2>
-        <InputTitle type="text" value={title} onChange={onChangeTitle} />
+        <InputTitle
+          type="text"
+          value={title}
+          onChange={onChangeTitle}
+          placeholder="제목을 입력해주세요."
+        />
         <h2>내용</h2>
-        <InputDesc value={desc} onChange={onChangeDesc} />
+        <InputDesc
+          value={desc}
+          onChange={onChangeDesc}
+          placeholder="내용을 입력해주세요."
+        />
         <SaveButton onClick={addList}>저장하기</SaveButton>
       </InputGrid>
       <ListGrid>
@@ -101,6 +110,8 @@ const InputDesc = styled.textarea`
   font-size: 14px;
   margin: 10px auto;
   padding: 10px;
+  overflow: hidden;
+  word-break: break-word;
 `;
 
 const SaveButton = styled.button`
