@@ -25,11 +25,10 @@ const TodoList: FunctionComponent<{ data: Data }> = ({ data }) => {
       <TitleWrapper>{data.title}</TitleWrapper>
       <DescWrapper>{data.description}</DescWrapper>
       <FooterGrid>
+        <DateWrapper>{data.date.slice(0, 10)}</DateWrapper>
         <div>
-          <Button>완료하기</Button>
           <Button onClick={deleteList}>삭제하기</Button>
         </div>
-        <DateWrapper>{data.date.slice(0, 10)}</DateWrapper>
       </FooterGrid>
     </Card>
   );
@@ -81,7 +80,6 @@ const FooterGrid = styled.div`
 const Button = styled.button`
   width: 70px;
   font-size: 12px;
-  margin-right: 10px;
   background-color: #bf94e4;
   color: #fff;
   border: none;
